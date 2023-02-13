@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\FoodMenu;
 use App\Models\Reservation;
+use App\Models\Chef;
 
 class AdminController extends Controller
 {
@@ -76,7 +77,6 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-
     // Reservation
     public function reservation(Request $request) {
 
@@ -97,6 +97,53 @@ class AdminController extends Controller
     public function viewreservation() {
         $data = Reservation::all();
         return view('admin.viewreservation', compact('data'));
+    }
+
+    // chefs
+    public function viewchefs() {
+        $chefs = Chef::all();
+        return view('admin.chefs', compact('chefs'));
+    }
+
+    public function uploadchef(Request $request) {
+
+        $chef= new Chef();
+
+        $image = $request->image;
+        $imagename = time().'.'.$image->getClientOriginalExtension();
+        $request->image->move('chefimage', $imagename);
+
+        $chef->image=$imagename;
+
+        $chef->name=$request->name;
+        $chef->speciality=$request->speciality;
+
+        $chef->save();
+        return redirect()->back();
+    }
+
+    public function editchef($id){
+        $chef = Chef::find($id);
+
+        return view('admin.updatechef', compact('chef'));
+    }
+
+    public function updatechef(Request $request, $id){
+        $chef = Chef::find($id);
+
+        $image = $request->image;
+
+        if($image) {
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $request->image->move('chefimage', $imagename);
+            $chef->image=$imagename;
+        }
+
+        $chef->name=$request->name;
+        $chef->speciality=$request->speciality;
+
+        $chef->save();
+        return redirect()->back();
     }
 
 }
