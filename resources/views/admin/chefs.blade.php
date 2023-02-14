@@ -48,8 +48,8 @@
                             <td>{{ $chef->speciality }}</td>
                             <td><img src="/chefimage/{{ $chef->image }}" alt=""></td>
                             <td>
-                                {{-- <a href="{{ url('/deletefchef', $chef->id) }}" class="badge badge-danger">Delete</a> --}}
                                 <a href="{{ url('/editchef', $chef->id) }}" class="badge badge-info">Update</a>
+                                <a href="{{ url('/deletechef', $chef->id) }}" class="badge badge-danger">Delete</a>
                             </td>
                         </tr>
                         @endforeach

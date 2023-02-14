@@ -39,6 +39,10 @@ Route::get('/chefs', [AdminController::class, 'viewchefs']);
 Route::post('/uploadchef', [AdminController::class, 'uploadchef']);
 Route::get('/editchef/{id}', [AdminController::class, 'editchef']);
 Route::post('/updatechef/{id}', [AdminController::class, 'updatechef']);
+Route::get('/deletechef/{id}', [AdminController::class, 'deletechef']);
+
+
+Route::post('/addcart/{id}', [HomeController::class, 'addcart']);
 
 Route::middleware([
     'auth:sanctum',
