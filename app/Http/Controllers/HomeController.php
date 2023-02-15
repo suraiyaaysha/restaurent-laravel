@@ -59,4 +59,23 @@ class HomeController extends Controller
         }
     }
 
+    // Show Cart
+    public function showcart(Request $request, $id) {
+        $count = Cart::where('user_id', $id)->count();
+
+
+        $data2 = Cart::select('*')->where('user_id', '=', $id)->get();
+
+        $data = Cart::where('user_id', $id)->join('food_menus', 'carts.food_id', '=', 'food_menus.id')->get();
+
+        return view('showcart', compact('count', 'data', 'data2'));
+    }
+
+    // Remove cart
+    public function remove($id) {
+        $data= Cart::find($id);
+        $data->delete();
+        return redirect()->back();
+    }
+
 }

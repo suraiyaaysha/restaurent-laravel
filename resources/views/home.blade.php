@@ -64,7 +64,7 @@ https://templatemo.com/tm-558-klassy-cafe
                             <li class="scroll-to-section"><a href="#chefs">Chefs</a></li>
                             <li class="scroll-to-section"><a href="#reservation">Contact Us</a></li>
                             <li class="scroll-to-section">
-                                <a href="#">
+                                <a href="{{ url('/showcart', Auth::user()->id) }}">
                                 @auth
                                     Cart <span class="badge badge-success">{{ $count }}</span>
                                 @endauth
