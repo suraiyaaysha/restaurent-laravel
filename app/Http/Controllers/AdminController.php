@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\FoodMenu;
 use App\Models\Reservation;
 use App\Models\Chef;
+use App\Models\Order;
+use Auth;
 
 class AdminController extends Controller
 {
@@ -52,7 +54,6 @@ class AdminController extends Controller
     }
 
 
-
     public function upload(Request $request) {
 
         $data= new FoodMenu();
@@ -95,8 +96,11 @@ class AdminController extends Controller
     }
 
     public function viewreservation() {
-        $data = Reservation::all();
-        return view('admin.viewreservation', compact('data'));
+        if(Auth::id()) {
+            $data = Reservation::all();
+            return view('admin.viewreservation', compact('data'));
+        }else
+        return redirect('login');
     }
 
     // chefs
@@ -150,6 +154,20 @@ class AdminController extends Controller
         $chef = Chef::find($id);
         $chef->delete();
         return redirect()->back();
+    }
+
+    public function orders(){
+        $orders= Order::all();
+        return view('admin.orders', compact('orders'));
+    }
+
+    // Search
+    public function search(Request $request){
+        $search = $request->search;
+
+        $orders= Order::where('user_name', 'Like', '%'.$search.'%')->orWhere('food_name', 'Like', '%'.$search.'%')->get();
+
+        return view('admin.orders', compact('orders'));
     }
 
 }

@@ -42,64 +42,9 @@ https://templatemo.com/tm-558-klassy-cafe
         </div>
     </div>
     <!-- ***** Preloader End ***** -->
-
-
+    
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <img src="{{ asset('frontend') }}/assets/images/klassy-logo.png" align="klassy cafe html template">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#about">About</a></li>
-
-                            <li class="scroll-to-section"><a href="#menu">Menu</a></li>
-                            <li class="scroll-to-section"><a href="#chefs">Chefs</a></li>
-                            <li class="scroll-to-section"><a href="#reservation">Contact Us</a></li>
-                            <li class="scroll-to-section">
-                                <a href="{{ url('/showcart', Auth::user()->id) }}">
-                                @auth
-                                    Cart <span class="badge badge-success">{{ $count }}</span>
-                                @endauth
-
-                                @guest
-                                    Cart <span class="badge badge-success">0</span>
-                                @endguest
-                                </a>
-                            </li>
-
-                            {{-- <li> --}}
-                                @if (Route::has('login'))
-                                    {{-- <div class=""> --}}
-                                        @auth
-                                            {{-- <li><a href="{{ url('/dashboard') }}" class="">Dashboard</a></li> --}}
-                                            <x-app-layout></x-app-layout>
-                                        @else
-                                        <li><a href="{{ route('login') }}">Log in</a></li>
-                                            @if (Route::has('register'))
-                                                <li><a href="{{ route('register') }}" class="">Register</a></li>
-                                            @endif
-                                        @endauth
-                                    {{-- </div> --}}
-                                @endif
-                            {{-- </li> --}}
-                        </ul>
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('header')
     <!-- ***** Header Area End ***** -->
 
     <!-- ***** Show cart Area Starts ***** -->
@@ -114,37 +59,84 @@ https://templatemo.com/tm-558-klassy-cafe
                     </div>
                 </div>
             </div>
-            <div class="row mt-5 pt-5">
-                <div class="col-12">
-                    <table class="table table-border">
-                        <thead>
-                            <tr>
-                                <th>Food Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                {{-- <th>Action</th> --}}
-                            </th>
-                        </thead>
-                        <tbody>
-                            @foreach ($data as $item)
+            <form action="{{ url('orderconfirm') }}" method="POST">
+                @csrf
+                <div class="row mt-5 pt-5">
+                    <div class="col-12">
+                        <table class="table table-border">
+                            <thead>
                                 <tr>
-                                    <td>{{ $item->food_name }}</td>
-                                    <td>{{ $item->price }}</td>
-                                    <td>{{ $item->quantity }}</td>
-                                </tr>
-                            @endforeach
+                                    <th>Food Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    {{-- <th>Action</th> --}}
+                                </th>
+                            </thead>
+                            <tbody>
+                                @foreach ($data as $item)
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="food_name[]" value="{{ $item->food_name }}" hidden>
+                                            {{ $item->food_name }}
+                                        </td>
+                                        <td>
+                                            <input type="text" name="price[]" value="{{ $item->price }}" hidden>
+                                            {{ $item->price }}
+                                        </td>
+                                        <td>
+                                            <input type="text" name="quantity[]" value="{{ $item->quantity }}" hidden>
+                                            {{ $item->quantity }}
+                                        </td>
+                                    </tr>
+                                @endforeach
 
-                            @foreach ($data2 as $item2)
-                                {{-- <tr class="position-relative"> --}}
-                                    <td><a href="{{ url('/remove', $item2->id) }}" class="btn btn-danger remove-cart-btn">Remove</a></td>
-                                {{-- </tr> --}}
-                            @endforeach
+                                @foreach ($data2 as $item2)
+                                    {{-- <tr class="position-relative"> --}}
+                                        <td><a href="{{ url('/remove', $item2->id) }}" class="btn btn-danger remove-cart-btn">Remove</a></td>
+                                    {{-- </tr> --}}
+                                @endforeach
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr>
+                    <div class="col-md-12 mt-4">
+                        <div class="float-right">
+                            <button class="btn btn-primary" type="button" id="order">Order Now</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-4">
+
+                        {{-- <div class="float-right" id="appear" style="display: none"> --}}
+                        <div class="float-right" id="appear">
+                            <div class="mb-3">
+                                <label>Name</label>
+                                <input type="text" name="name" placeholder="Name">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Phone</label>
+                                <input type="text" name="phone" placeholder="Phone">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Address</label>
+                                <input type="text" name="address" placeholder="Address">
+                            </div>
+
+                            <div>
+                                <button class="btn btn-primary text-black" type="submit">Order Confirm</button>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
-            </div>
+            </form>
         </div>
+
     </section>
     <!-- ***** Show cart Area Ends ***** -->
 
@@ -216,5 +208,12 @@ https://templatemo.com/tm-558-klassy-cafe
         });
 
     </script>
+
+        <script>
+        $('#order').on('click', function() {
+            $('#appear').toggle('show');
+        })
+    </script>
+
   </body>
 </html>

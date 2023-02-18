@@ -43,8 +43,20 @@ Route::get('/deletechef/{id}', [AdminController::class, 'deletechef']);
 
 
 Route::post('/addcart/{id}', [HomeController::class, 'addcart']);
+Route::get('/emptyshowcart', [HomeController::class, 'emptyshowcart']);
 Route::get('/showcart/{id}', [HomeController::class, 'showcart']);
 Route::get('/remove/{id}', [HomeController::class, 'remove']);
+
+// Order
+Route::post('/orderconfirm', [HomeController::class, 'orderconfirm']);
+
+
+// Admin Order
+Route::get('/orders', [AdminController::class, 'orders']);
+
+// Search
+Route::get('/search', [AdminController::class, 'search']);
+
 
 Route::middleware([
     'auth:sanctum',
